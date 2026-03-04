@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>APEC培训 - 酒店入住</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", Arial, sans-serif;
+        }
+        body {
+            background: #f5f7fa;
+            color: #333;
+            padding-bottom: 50px;
+        }
+        .header {
+            background: #0066cc;
+            color: #fff;
+            padding: 18px 15px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: 600;
+        }
+        .tab-nav {
+            display: flex;
+            background: #fff;
+            border-bottom: 1px solid #e5e7eb;
+            position: sticky;
+            top: 0;
+            z-index: 99;
+        }
+        .tab-nav button {
+            flex: 1;
+            padding: 12px 0;
+            border: none;
+            background: transparent;
+            font-size: 16px;
+            color: #666;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+        }
+        .tab-nav button.active {
+            color: #0066cc;
+            border-bottom: 3px solid #0066cc;
+            font-weight: 600;
+        }
+        .tab-content {
+            display: none;
+            padding: 15px;
+        }
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+        .video-box {
+            width: 100%;
+            height: 200px;
+            background: #e5e7eb;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+        .mode-switch {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .mode-switch button {
+            flex: 1;
+            padding: 8px 0;
+            border: 1px solid #0066cc;
+            border-radius: 4px;
+            background: transparent;
+            color: #0066cc;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .mode-switch button.active {
+            background: #0066cc;
+            color: #fff;
+        }
+        .dialog-box {
+            background: #fff;
+            border-radius: 8px;
+            padding: 15px;
+            line-height: 1.8;
+        }
+        .dialog-item {
+            margin-bottom: 12px;
+        }
+        .dialog-item:last-child {
+            margin-bottom: 0;
+        }
+        .s {
+            color: #0066cc;
+            font-weight: 500;
+        }
+        .f {
+            color: #e67e22;
+            font-weight: 500;
+        }
+        .word-game-box {
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px 15px;
+        }
+        .word-question {
+            font-size: 18px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .word-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .word-options button {
+            padding: 12px 0;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            background: #f9fafb;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .word-options button.correct {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #28a745;
+        }
+        .word-options button.wrong {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+        .game-result {
+            text-align: center;
+            font-size: 16px;
+            margin-bottom: 15px;
+            height: 24px;
+        }
+        .restart-btn {
+            width: 100%;
+            padding: 10px 0;
+            background: #0066cc;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .sentence-box {
+            background: #fff;
+            border-radius: 8px;
+            padding: 15px;
+        }
+        .sentence-item {
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+        .sentence-item:last-child {
+            margin-bottom: 0;
+        }
+        .sentence-eng {
+            font-size: 16px;
+            color: #0066cc;
+            margin-bottom: 8px;
+        }
+        .sentence-cn {
+            font-size: 15px;
+            color: #666;
+        }
+        .read-btn {
+            margin-top: 8px;
+            padding: 6px 12px;
+            border: 1px solid #0066cc;
+            border-radius: 4px;
+            background: transparent;
+            color: #0066cc;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .culture-box {
+            background: #fff;
+            border-radius: 8px;
+            padding: 15px;
+            line-height: 1.8;
+        }
+        .culture-title {
+            font-size: 18px;
+            color: #0066cc;
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .culture-item {
+            margin-bottom: 12px;
+        }
+        .culture-item h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .culture-item p {
+            font-size: 15px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">APEC培训 - 酒店入住 (Hotel Checkin)</div>
+    <!-- 顶部标签栏 -->
+    <div class="tab-nav">
+        <button class="active" onclick="switchTab('dialog')">样例对话</button>
+        <button onclick="switchTab('wordGame')">高频词游戏</button>
+        <button onclick="switchTab('sentence')">核心句型跟读</button>
+        <button onclick="switchTab('culture')">文化背景知识</button>
+    </div>
+
+    <!-- 样例对话模块【B站视频从头播放，修复播放失败问题】 -->
+    <div class="tab-content active" id="dialog">
+        <div class="video-box">
+            <!-- B站视频嵌入：从头播放、关闭弹幕、高清，适配所有浏览器 -->
+            <iframe 
+                src="https://player.bilibili.com/player.html?bvid=BV1fUPizFEwH&page=1&danmaku=0&high_quality=1&autoplay=0" 
+                width="100%" 
+                height="100%" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen
+                style="border-radius: 8px;"
+            >
+                你的浏览器不支持视频播放，请用Chrome/Edge/微信浏览器打开
+            </iframe>
+        </div>
+        <div class="mode-switch">
+            <button class="active" onclick="switchMode('both')">中英文对照</button>
+            <button onclick="switchMode('eng')">仅英文</button>
+            <button onclick="switchMode('cn')">仅中文</button>
+        </div>
+        <div class="dialog-box" id="dialogContent">
+            <!-- 中英文对照（默认） -->
+            <div class="dialog-item">
+                <span class="s">工作人员：</span>晚上好，欢迎来到万豪酒店。我是2026深圳APEC峰会的政务服务工作人员。能请您出示一下全名和APEC代表证件吗？<br/>
+                <span class="s">S:</span> Good evening, welcome to Marriott Hotel. I’m the government service staff for APEC 2026 Shenzhen. May I have your full name and your APEC delegate certificate, please?
+            </div>
+            <div class="dialog-item">
+                <span class="f">外宾：</span>晚上好。我叫约翰·史密斯，这是我的证件。<br/>
+                <span class="f">F:</span> Good evening. My name is John Smith, and this is my certificate.
+            </div>
+            <div class="dialog-item">
+                <span class="s">工作人员：</span>谢谢您，史密斯先生。根据APEC的安排，我们为您预留了一间城景豪华单人间，配备免费高速网络。您觉得可以吗？<br/>
+                <span class="s">S:</span> Thank you, Mr. Smith. We have reserved a deluxe single room for you according to the APEC arrangement, with a city view and free high-speed internet. Is that okay for you?
+            </div>
+            <div class="dialog-item">
+                <span class="f">外宾：</span>非常好，很满意。<br/>
+                <span class="f">F:</span> Perfect, that’s great.
+            </div>
+            <div class="dialog-item">
+                <span class="s">工作人员：</span>好的。这是您的房卡，房号是28楼的2808室。电梯就在您的右手边，前往高层需要刷房卡。<br/>
+                <span class="s">S:</span> Great. Here is your room card, the room number is 2808 on the 28th floor. The elevator is just on your right, and the access card is needed for the elevator to upper floors.
+            </div>
+            <div class="dialog-item">
+                <span class="f">外宾：</span>知道了。能介绍一下酒店的设施吗？<br/>
+                <span class="f">F:</span> Got it. Could you tell me about the hotel facilities?
+            </div>
+            <div class="dialog-item">
+                <span class="s">工作人员：</span>当然。早餐在3楼供应，时间是早上6:30到9:30，为APEC代表准备了中西式菜系。紧急呼叫号码印在房卡上，是8888，前台提供24小时服务。我们也提供叫醒服务，如果您需要的话。<br/>
+                <span class="s">S:</span> Sure. The breakfast is served on the 3rd floor from 6:30 to 9:30 a.m., with both Western and Chinese cuisines for APEC delegates. The emergency call number is printed on the room card, which is 8888, and the front desk is available 24 hours a day. We also offer wake-up call service, if you need it.
+            </div>
+            <div class="dialog-item">
+                <span class="f">外宾：</span>请帮我设置明天早上7点的叫醒服务。另外，明天的行程是怎样的？<br/>
+                <span class="f">F:</span> I need a wake-up call at 7 a.m. tomorrow, please. And what’s the schedule for tomorrow?
+            </div>
+            <div class="dialog-item">
+                <span class="s">工作人员：</span>没问题。您的叫醒服务已设置为明天早上7点。我们会在早上8点派班车在酒店门口接您，前往APEC峰会会场大约需要30分钟。开幕式将于早上9:30准时开始。<br/>
+                <span class="s">S:</span> No problem. Your wake-up call is set for 7 a.m. tomorrow. We will pick you up at the hotel gate at 8 a.m. by shuttle bus, and it will take about 30 minutes to reach the APEC summit venue. The opening ceremony will start at 9:30 a.m. sharp.
+            </div>
+            <div class="dialog-item">
+                <span class="f">外宾：</span>非常感谢您的详细介绍。<br/>
+                <span class="f">F:</span> Thank you so much for your detailed introduction.
+            </div>
+            <div class="dialog-item">
+                <span class="s">工作人员：</span>不客气，史密斯先生。如果您有其他需求，请随时联系前台或直接找我。祝您入住愉快！<br/>
+                <span class="s">S:</span> You’re welcome, Mr. Smith. If you have any other needs, please feel free to contact the front desk or me directly. Wish you a comfortable stay here!
+            </div>
+            <div class="dialog-item">
+                <span class="f">外宾：</span>非常感谢。<br/>
+                <span class="f">F:</span> Appreciate it.
+            </div>
+        </div>
+    </div>
+
+    <!-- 高频词互动游戏模块 -->
+    <div class="tab-content" id="wordGame">
+        <div class="word-game-box">
+            <div class="word-question" id="wordQuestion">豪华单人间 → ?</div>
+            <div class="word-options" id="wordOptions">
+                <button onclick="checkAnswer(this, 'deluxe single room')">deluxe single room</button>
+                <button onclick="checkAnswer(this, 'deluxe double room')">deluxe double room</button>
+                <button onclick="checkAnswer(this, 'twin room')">twin room</button>
+                <button onclick="checkAnswer(this, 'suite')">suite</button>
+            </div>
+            <div class="game-result" id="gameResult"></div>
+            <button class="restart-btn" onclick="restartGame()">重新开始游戏</button>
+        </div>
+    </div>
+
+    <!-- 核心句型跟读模块 -->
+    <div class="tab-content" id="sentence">
+        <div class="sentence-box">
+            <div class="sentence-item">
+                <div class="sentence-eng">May I have your full name and your APEC delegate certificate, please?</div>
+                <div class="sentence-cn">能请您出示一下全名和APEC代表证件吗？</div>
+                <button class="read-btn" onclick="readSentence(this)">点击跟读</button>
+            </div>
+            <div class="sentence-item">
+                <div class="sentence-eng">We have reserved a [room type] for you according to the APEC arrangement, with a [city view/sea view] and free high-speed internet.</div>
+                <div class="sentence-cn">根据APEC的安排，我们为您预留了一间[房型]，配备[城景/海景]和免费高速网络。</div>
+                <button class="read-btn" onclick="readSentence(this)">点击跟读</button>
+            </div>
+            <div class="sentence-item">
+                <div class="sentence-eng">The [服务/设施] is available on the [数字] floor from [时间] to [时间].</div>
+                <div class="sentence-cn">【服务/设施】在[数字]楼供应/开放，时间是[时间]到[时间]。</div>
+                <button class="read-btn" onclick="readSentence(this)">点击跟读</button>
+            </div>
+            <div class="sentence-item">
+                <div class="sentence-eng">We will pick you up at [地点] at [时间], and it will take about [时长] to reach the venue.</div>
+                <div class="sentence-cn">我们会在[时间]在[地点]接您，前往会场大约需要[时长]。</div>
+                <button class="read-btn" onclick="readSentence(this)">点击跟读</button>
+            </div>
+            <div class="sentence-item">
+                <div class="sentence-eng">If you have any other needs, please feel free to contact us. Wish you a comfortable stay here!</div>
+                <div class="sentence-cn">如果您有其他需求，请随时联系我们。祝您入住愉快！</div>
+                <button class="read-btn" onclick="readSentence(this)">点击跟读</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 文化背景知识模块 -->
+    <div class="tab-content" id="culture">
+        <div class="culture-box">
+            <div class="culture-title">APEC参与国文化与住宿禁忌</div>
+            <div class="culture-item">
+                <h4>欧美经济体（美国、加拿大、欧盟等）</h4>
+                <p>注重个人隐私和服务效率，介绍设施无需过度寒暄，信息准确简洁即可；对数字“13”“666”有特殊解读，介绍房号无需刻意提及禁忌数字；避免询问私人住宿偏好。</p>
+            </div>
+            <div class="culture-item">
+                <h4>东南亚经济体（马来西亚、新加坡、泰国等）</h4>
+                <p>偏好温和、亲切的表达，可适当增加礼貌性问候；马来西亚等伊斯兰国家外宾忌猪肉、酒类相关服务，优先安排无烟房，避免提及相关禁忌物品。</p>
+            </div>
+            <div class="culture-item">
+                <h4>日韩经济体（日本、韩国）</h4>
+                <p>注重礼仪细节，沟通时语气谦和；日本外宾忌荷花图案、梳子类物品，韩国外宾忌剪刀/刀具，介绍酒店用品时需规避；房号避免奇数（除3、5外）偏好。</p>
+            </div>
+            <div class="culture-item">
+                <h4>中东经济体（沙特、阿联酋、卡塔尔等）</h4>
+                <p>注重社交距离，避免肢体接触；忌猪肉、酒类、女性形象相关服务，酒店设施介绍需规避；左手视为不洁，递送房卡等物品需用右手；数字偏好双数，房号优先选择双数。</p>
+            </div>
+            <div class="culture-item">
+                <h4>通用住宿服务规范</h4>
+                <p>所有外宾房型以豪华单/双人间为主，重要代表安排套房，优先预留无烟房；紧急电话清晰告知并标注在房卡，明确前台24小时服务；房型更换需求需告知“协调会务组处理”，避免直接拒绝。</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 标签切换
+        function switchTab(tabId) {
+            const tabs = document.querySelectorAll('.tab-content');
+            const btns = document.querySelectorAll('.tab-nav button');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            btns.forEach(btn => btn.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // 对话模式切换
+        let dialogOrigin = document.getElementById('dialogContent').innerHTML;
+        function switchMode(mode) {
+            const btns = document.querySelectorAll('.mode-switch button');
+            btns.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            const dialog = document.getElementById('dialogContent');
+            if (mode === 'both') {
+                dialog.innerHTML = dialogOrigin;
+            } else if (mode === 'eng') {
+                let html = dialogOrigin.replace(/<br\/>.*?：.*?<br\/>/g, '<br/>').replace(/<span class="s">工作人员：<\/span>.*?<br\/>/g, '').replace(/<span class="f">外宾：<\/span>.*?<br\/>/g, '');
+                dialog.innerHTML = html;
+            } else if (mode === 'cn') {
+                let html = dialogOrigin.replace(/<span class="s">S:<\/span>.*?<br\/>/g, '').replace(/<span class="f">F:<\/span>.*?<br\/>/g, '');
+                dialog.innerHTML = html;
+            }
+        }
+
+        // 高频词游戏
+        const wordBank = [
+            {cn: "豪华单人间", eng: "deluxe single room"},
+            {cn: "豪华双人间", eng: "deluxe double room"},
+            {cn: "双床房", eng: "twin room"},
+            {cn: "套房", eng: "suite"},
+            {cn: "城景房", eng: "city view room"},
+            {cn: "无烟房", eng: "smoke-free room"},
+            {cn: "代表证件", eng: "delegate certificate"},
+            {cn: "房卡", eng: "room card"},
+            {cn: "叫醒服务", eng: "wake-up call"},
+            {cn: "班车", eng: "shuttle bus"}
+        ];
+        let currentWord = {};
+        function initGame() {
+            // 随机选一个单词
+            currentWord = wordBank[Math.floor(Math.random() * wordBank.length)];
+            document.getElementById('wordQuestion').innerHTML = currentWord.cn + ' → ?';
+            // 生成选项
+            const options = [currentWord.eng];
+            // 随机加3个干扰项
+            while (options.length < 4) {
+                const randomWord = wordBank[Math.floor(Math.random() * wordBank.length)];
+                if (!options.includes(randomWord.eng)) options.push(randomWord.eng);
+            }
+            // 打乱选项
+            options.sort(() => Math.random() - 0.5);
+            const optionBox = document.getElementById('wordOptions');
+            optionBox.innerHTML = '';
+            options.forEach(opt => {
+                optionBox.innerHTML += `<button onclick="checkAnswer(this, '${opt}')">${opt}</button>`;
+            });
+            document.getElementById('gameResult').innerHTML = '';
+        }
+        // 检查答案
+        function checkAnswer(btn, answer) {
+            const result = document.getElementById('gameResult');
+            if (answer === currentWord.eng) {
+                btn.classList.add('correct');
+                result.innerHTML = '✅ 回答正确！';
+                result.style.color = '#28a745';
+            } else {
+                btn.classList.add('wrong');
+                result.innerHTML = `❌ 回答错误，正确答案：${currentWord.eng}`;
+                result.style.color = '#dc3545';
+            }
+            // 禁用所有按钮
+            const allBtns = document.querySelectorAll('.word-options button');
+            allBtns.forEach(b => b.onclick = null);
+        }
+        // 重新开始游戏
+        function restartGame() {
+            initGame();
+        }
+        // 初始化游戏
+        window.onload = initGame();
+
+        // 句型跟读（模拟，可对接语音接口）
+        function readSentence(btn) {
+            const sentence = btn.previousElementSibling.previousElementSibling.innerHTML;
+            // 此处可嵌入语音合成API，播放英文句子
+            alert(`正在播放跟读：\n${sentence}`);
+            // 实际开发可替换为：new SpeechSynthesisUtterance(sentence); speechSynthesis.speak(utterance);
+        }
+    </script>
+</body>
+</html>
