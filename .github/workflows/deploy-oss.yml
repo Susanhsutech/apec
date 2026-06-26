@@ -29,7 +29,7 @@ jobs:
 
       - name: Upload to OSS
         run: |
-          aliyun ossutil cp index.html oss://${{ secrets.ALIYUN_OSS_BUCKET }}/apec/index.html \
+          aliyun ossutil cp index.html oss://${{ secrets.ALIYUN_OSS_BUCKET }}/index.html \
             --region ${{ secrets.ALIYUN_OSS_REGION }} \
             -f
 
@@ -37,6 +37,6 @@ jobs:
         if: ${{ secrets.ALIYUN_CDN_DOMAIN != '' }}
         run: |
           aliyun cdn RefreshObjectCaches \
-            --ObjectPath "https://${{ secrets.ALIYUN_CDN_DOMAIN }}/apec/index.html" \
+            --ObjectPath "https://${{ secrets.ALIYUN_CDN_DOMAIN }}/index.html" \
             --ObjectType File
         continue-on-error: true
