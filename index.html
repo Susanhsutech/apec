@@ -3,471 +3,1616 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>APEC培训 - 酒店入住</title>
+    <title>APEC 培训 · 酒店入住 | Hotel Check-in</title>
+    <link href="https://fonts.googleapis.cn/css2?family=Noto+Serif+SC:wght@500;700&family=Noto+Sans+SC:wght@400;500;600&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
     <style>
+        /* ========== Design Tokens ========== */
+        :root {
+            --navy-900: #0A1E3C;
+            --navy-800: #0F2847;
+            --navy-700: #1A365D;
+            --navy-600: #2B4C7E;
+            --navy-100: #E8EEF7;
+            --navy-50: #F4F7FB;
+            --gold-500: #C9A962;
+            --gold-400: #D4BB7C;
+            --gold-300: #E5D4A8;
+            --gold-50: #FDF8EC;
+            --ink-900: #0F1E3D;
+            --ink-700: #334155;
+            --ink-500: #64748B;
+            --ink-300: #CBD5E1;
+            --paper: #FAFBFD;
+            --white: #FFFFFF;
+            --success: #059669;
+            --error: #DC2626;
+            --shadow-sm: 0 1px 2px rgba(10, 30, 60, 0.04), 0 2px 8px rgba(10, 30, 60, 0.06);
+            --shadow-md: 0 4px 12px rgba(10, 30, 60, 0.08), 0 12px 32px rgba(10, 30, 60, 0.10);
+            --shadow-lg: 0 8px 24px rgba(10, 30, 60, 0.12), 0 24px 64px rgba(10, 30, 60, 0.14);
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+            --font-serif: "Noto Serif SC", "Songti SC", serif;
+            --font-sans: "Noto Sans SC", -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+            --font-display: "Playfair Display", "Noto Serif SC", serif;
+            --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: "Microsoft YaHei", Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
+
+        html {
+            -webkit-text-size-adjust: 100%;
+        }
+
         body {
-            background: #f5f7fa;
-            color: #333;
-            padding-bottom: 50px;
+            font-family: var(--font-sans);
+            background: var(--paper);
+            color: var(--ink-900);
+            line-height: 1.6;
+            min-height: 100vh;
         }
+
+        /* ========== Header ========== */
         .header {
-            background: #0066cc;
-            color: #fff;
-            padding: 18px 15px;
+            background: linear-gradient(135deg, var(--navy-900) 0%, var(--navy-700) 100%);
+            color: var(--white);
+            padding: 28px 20px 32px;
             text-align: center;
-            font-size: 20px;
-            font-weight: 600;
+            position: relative;
+            overflow: hidden;
         }
+
+        .header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(201, 169, 98, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .header::after {
+            content: "";
+            position: absolute;
+            bottom: -60%;
+            left: -15%;
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, rgba(201, 169, 98, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .header-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border: 1px solid var(--gold-500);
+            border-radius: 100px;
+            font-size: 11px;
+            color: var(--gold-400);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            font-family: var(--font-display);
+        }
+
+        .header-badge::before {
+            content: "◆";
+            font-size: 8px;
+            color: var(--gold-500);
+        }
+
+        .header-title {
+            font-family: var(--font-serif);
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 4px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-subtitle {
+            font-family: var(--font-display);
+            font-size: 14px;
+            color: var(--gold-400);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-divider {
+            width: 40px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold-500), transparent);
+            margin: 12px auto 0;
+        }
+
+        /* ========== Tab Navigation ========== */
         .tab-nav {
             display: flex;
-            background: #fff;
-            border-bottom: 1px solid #e5e7eb;
+            background: var(--white);
+            border-bottom: 1px solid var(--ink-300);
             position: sticky;
             top: 0;
-            z-index: 99;
+            z-index: 100;
+            box-shadow: var(--shadow-sm);
+            padding: 0 8px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
         }
+
+        .tab-nav::-webkit-scrollbar {
+            display: none;
+        }
+
         .tab-nav button {
             flex: 1;
-            padding: 12px 0;
+            min-width: max-content;
+            padding: 14px 10px;
             border: none;
             background: transparent;
-            font-size: 16px;
-            color: #666;
+            font-size: 14px;
+            font-family: var(--font-sans);
+            font-weight: 500;
+            color: var(--ink-500);
             cursor: pointer;
-            border-bottom: 3px solid transparent;
+            position: relative;
+            transition: color 0.3s var(--ease);
+            white-space: nowrap;
         }
+
+        .tab-nav button::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--navy-700), var(--gold-500));
+            border-radius: 2px;
+            transition: width 0.3s var(--ease);
+        }
+
         .tab-nav button.active {
-            color: #0066cc;
-            border-bottom: 3px solid #0066cc;
+            color: var(--navy-700);
             font-weight: 600;
         }
+
+        .tab-nav button.active::after {
+            width: 32px;
+        }
+
+        .tab-nav button .tab-en {
+            display: block;
+            font-size: 10px;
+            font-family: var(--font-display);
+            color: var(--ink-300);
+            font-weight: 400;
+            letter-spacing: 0.5px;
+            margin-top: 2px;
+            transition: color 0.3s var(--ease);
+        }
+
+        .tab-nav button.active .tab-en {
+            color: var(--gold-500);
+        }
+
+        /* ========== Tab Content ========== */
         .tab-content {
             display: none;
-            padding: 15px;
+            padding: 20px 16px 40px;
+            max-width: 800px;
+            margin: 0 auto;
+            animation: fadeInUp 0.4s var(--ease);
         }
+
         .tab-content.active {
             display: block;
-            animation: fadeIn 0.3s ease;
         }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         @keyframes fadeIn {
-            from {opacity: 0;}
-            to {opacity: 1;}
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
+
+        /* ========== Section Title ========== */
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+            padding-left: 12px;
+            border-left: 3px solid var(--gold-500);
+        }
+
+        .section-title h3 {
+            font-family: var(--font-serif);
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--navy-900);
+        }
+
+        .section-title span {
+            font-family: var(--font-display);
+            font-size: 12px;
+            color: var(--ink-500);
+            letter-spacing: 1px;
+        }
+
+        /* ========== Video Box ========== */
         .video-box {
             width: 100%;
-            height: 200px;
-            background: #e5e7eb;
-            border-radius: 8px;
+            aspect-ratio: 16 / 9;
+            background: var(--navy-900);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--ink-300);
+        }
+
+        .video-box iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
+        /* ========== Mode Switch ========== */
+        .mode-switch {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 18px;
+            padding: 4px;
+            background: var(--navy-50);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--navy-100);
+        }
+
+        .mode-switch button {
+            flex: 1;
+            padding: 8px 12px;
+            border: none;
+            border-radius: var(--radius-sm);
+            background: transparent;
+            color: var(--ink-500);
+            font-size: 13px;
+            font-family: var(--font-sans);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s var(--ease);
+        }
+
+        .mode-switch button.active {
+            background: var(--white);
+            color: var(--navy-700);
+            box-shadow: 0 1px 3px rgba(10, 30, 60, 0.08);
+            font-weight: 600;
+        }
+
+        /* ========== Chat Bubbles (Dialog) ========== */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .chat-row {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            animation: fadeInUp 0.35s var(--ease) backwards;
+        }
+
+        .chat-row.staff {
+            justify-content: flex-start;
+        }
+
+        .chat-row.guest {
+            justify-content: flex-end;
+            flex-direction: row-reverse;
+        }
+
+        .chat-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 15px;
-            overflow: hidden;
+            font-size: 14px;
+            flex-shrink: 0;
+            font-weight: 600;
+            font-family: var(--font-serif);
         }
-        .mode-switch {
+
+        .chat-row.staff .chat-avatar {
+            background: linear-gradient(135deg, var(--navy-700), var(--navy-600));
+            color: var(--gold-300);
+            border: 2px solid var(--gold-500);
+        }
+
+        .chat-row.guest .chat-avatar {
+            background: linear-gradient(135deg, var(--gold-400), var(--gold-500));
+            color: var(--navy-900);
+            border: 2px solid var(--navy-700);
+        }
+
+        .chat-bubble-wrap {
+            max-width: calc(100% - 56px);
             display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
+            flex-direction: column;
+            gap: 4px;
         }
-        .mode-switch button {
-            flex: 1;
-            padding: 8px 0;
-            border: 1px solid #0066cc;
-            border-radius: 4px;
-            background: transparent;
-            color: #0066cc;
+
+        .chat-row.staff .chat-bubble-wrap {
+            align-items: flex-start;
+        }
+
+        .chat-row.guest .chat-bubble-wrap {
+            align-items: flex-end;
+        }
+
+        .chat-name {
+            font-size: 11px;
+            color: var(--ink-500);
+            font-family: var(--font-display);
+            letter-spacing: 0.5px;
+            padding: 0 4px;
+        }
+
+        .chat-bubble {
+            padding: 12px 14px;
+            border-radius: var(--radius-lg);
+            line-height: 1.65;
             font-size: 14px;
-            cursor: pointer;
+            position: relative;
+            box-shadow: var(--shadow-sm);
+            word-break: break-word;
         }
-        .mode-switch button.active {
-            background: #0066cc;
-            color: #fff;
+
+        .chat-row.staff .chat-bubble {
+            background: var(--white);
+            color: var(--ink-900);
+            border: 1px solid var(--navy-100);
+            border-top-left-radius: 4px;
         }
-        .dialog-box {
-            background: #fff;
-            border-radius: 8px;
-            padding: 15px;
-            line-height: 1.8;
+
+        .chat-row.guest .chat-bubble {
+            background: linear-gradient(135deg, var(--navy-700), var(--navy-600));
+            color: var(--white);
+            border-top-right-radius: 4px;
         }
-        .dialog-item {
-            margin-bottom: 12px;
-        }
-        .dialog-item:last-child {
-            margin-bottom: 0;
-        }
-        .s {
-            color: #0066cc;
-            font-weight: 500;
-        }
-        .f {
-            color: #e67e22;
-            font-weight: 500;
-        }
-        .word-game-box {
-            background: #fff;
-            border-radius: 8px;
-            padding: 20px 15px;
-        }
-        .word-question {
-            font-size: 18px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        .word-options {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        .word-options button {
-            padding: 12px 0;
-            border: 1px solid #e5e7eb;
-            border-radius: 6px;
-            background: #f9fafb;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        .word-options button.correct {
-            background: #d4edda;
-            border-color: #28a745;
-            color: #28a745;
-        }
-        .word-options button.wrong {
-            background: #f8d7da;
-            border-color: #dc3545;
-            color: #dc3545;
-        }
-        .game-result {
-            text-align: center;
-            font-size: 16px;
-            margin-bottom: 15px;
-            height: 24px;
-        }
-        .restart-btn {
-            width: 100%;
-            padding: 10px 0;
-            background: #0066cc;
-            color: #fff;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        .sentence-box {
-            background: #fff;
-            border-radius: 8px;
-            padding: 15px;
-        }
-        .sentence-item {
-            margin-bottom: 20px;
-            line-height: 1.7;
-        }
-        .sentence-item:last-child {
-            margin-bottom: 0;
-        }
-        .sentence-eng {
-            font-size: 16px;
-            color: #0066cc;
-            margin-bottom: 8px;
-        }
-        .sentence-cn {
-            font-size: 15px;
-            color: #666;
-        }
-        .read-btn {
-            margin-top: 8px;
-            padding: 6px 12px;
-            border: 1px solid #0066cc;
-            border-radius: 4px;
-            background: transparent;
-            color: #0066cc;
-            font-size: 14px;
-            cursor: pointer;
-        }
-        .culture-box {
-            background: #fff;
-            border-radius: 8px;
-            padding: 15px;
-            line-height: 1.8;
-        }
-        .culture-title {
-            font-size: 18px;
-            color: #0066cc;
-            font-weight: 600;
-            margin-bottom: 15px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid #e5e7eb;
-        }
-        .culture-item {
-            margin-bottom: 12px;
-        }
-        .culture-item h4 {
-            font-size: 16px;
-            font-weight: 600;
+
+        .chat-bubble .text-cn {
             margin-bottom: 6px;
         }
-        .culture-item p {
+
+        .chat-bubble .text-eng {
+            font-family: var(--font-display);
+            font-size: 13px;
+            padding-top: 6px;
+            border-top: 1px dashed rgba(201, 169, 98, 0.3);
+            line-height: 1.6;
+        }
+
+        .chat-row.guest .chat-bubble .text-eng {
+            border-top-color: rgba(212, 187, 124, 0.3);
+            color: var(--gold-300);
+        }
+
+        .chat-row.staff .chat-bubble .text-eng {
+            color: var(--navy-600);
+            font-weight: 500;
+        }
+
+        /* 仅英文模式 */
+        .mode-eng .chat-bubble .text-cn {
+            display: none;
+        }
+        .mode-eng .chat-bubble .text-eng {
+            border-top: none;
+            padding-top: 0;
+        }
+
+        /* 仅中文模式 */
+        .mode-cn .chat-bubble .text-eng {
+            display: none;
+        }
+        .mode-cn .chat-bubble .text-cn {
+            margin-bottom: 0;
+        }
+
+        /* 语音播放按钮 */
+        .speak-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            background: transparent;
+            border: 1px solid var(--gold-500);
+            border-radius: 100px;
+            color: var(--gold-500);
+            font-size: 11px;
+            cursor: pointer;
+            margin-top: 8px;
+            font-family: var(--font-sans);
+            transition: all 0.2s var(--ease);
+        }
+
+        .speak-btn:hover {
+            background: var(--gold-50);
+        }
+
+        .speak-btn.playing {
+            background: var(--gold-500);
+            color: var(--navy-900);
+        }
+
+        .chat-row.staff .speak-btn {
+            border-color: var(--navy-600);
+            color: var(--navy-600);
+        }
+
+        .chat-row.staff .speak-btn:hover {
+            background: var(--navy-50);
+        }
+
+        .chat-row.staff .speak-btn.playing {
+            background: var(--navy-700);
+            color: var(--white);
+        }
+
+        .speak-icon {
+            display: inline-block;
+            width: 0;
+            height: 0;
+            border-top: 4px solid transparent;
+            border-bottom: 4px solid transparent;
+            border-left: 5px solid currentColor;
+        }
+
+        .speak-btn.playing .speak-icon {
+            animation: pulse 0.8s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.6; }
+        }
+
+        /* ========== Word Game ========== */
+        .word-game-box {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 24px 20px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--ink-300);
+        }
+
+        .word-progress {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            font-size: 12px;
+            color: var(--ink-500);
+        }
+
+        .word-progress .score {
+            font-family: var(--font-display);
+            font-weight: 700;
+            color: var(--gold-500);
+            font-size: 16px;
+        }
+
+        .word-progress .score span {
+            color: var(--ink-500);
+            font-size: 12px;
+            font-weight: 400;
+        }
+
+        .word-progress-bar {
+            height: 4px;
+            background: var(--navy-50);
+            border-radius: 2px;
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+
+        .word-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--navy-700), var(--gold-500));
+            border-radius: 2px;
+            transition: width 0.4s var(--ease);
+            width: 0%;
+        }
+
+        .word-question {
+            font-size: 20px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 8px;
+            color: var(--navy-900);
+            font-family: var(--font-serif);
+        }
+
+        .word-question-hint {
+            text-align: center;
+            font-size: 12px;
+            color: var(--ink-500);
+            margin-bottom: 24px;
+            font-family: var(--font-display);
+            letter-spacing: 1px;
+        }
+
+        .word-options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        @media (min-width: 480px) {
+            .word-options {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .word-options button {
+            padding: 14px 16px;
+            border: 1.5px solid var(--ink-300);
+            border-radius: var(--radius-md);
+            background: var(--white);
             font-size: 15px;
-            color: #666;
+            font-family: var(--font-display);
+            font-weight: 500;
+            color: var(--ink-700);
+            cursor: pointer;
+            transition: all 0.2s var(--ease);
+            text-align: left;
+        }
+
+        .word-options button:hover:not(:disabled) {
+            border-color: var(--navy-600);
+            background: var(--navy-50);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .word-options button.correct {
+            background: #ECFDF5;
+            border-color: var(--success);
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        .word-options button.wrong {
+            background: #FEF2F2;
+            border-color: var(--error);
+            color: var(--error);
+        }
+
+        .word-options button:disabled {
+            cursor: not-allowed;
+        }
+
+        .game-result {
+            text-align: center;
+            font-size: 14px;
+            margin-bottom: 16px;
+            min-height: 24px;
+            font-weight: 500;
+        }
+
+        .restart-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--navy-700), var(--navy-600));
+            color: var(--white);
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 15px;
+            font-family: var(--font-sans);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s var(--ease);
+            letter-spacing: 1px;
+        }
+
+        .restart-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .restart-btn:active {
+            transform: translateY(0);
+        }
+
+        .next-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--gold-500), var(--gold-400));
+            color: var(--navy-900);
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 15px;
+            font-family: var(--font-sans);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s var(--ease);
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            display: none;
+        }
+
+        .next-btn.show {
+            display: block;
+        }
+
+        .next-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* ========== Sentence Practice ========== */
+        .sentence-box {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .sentence-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 18px 18px 14px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--ink-300);
+            transition: all 0.3s var(--ease);
+        }
+
+        .sentence-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-1px);
+        }
+
+        .sentence-card-num {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            line-height: 24px;
+            text-align: center;
+            background: var(--gold-50);
+            color: var(--gold-500);
+            border-radius: 50%;
+            font-size: 12px;
+            font-weight: 700;
+            font-family: var(--font-display);
+            margin-bottom: 10px;
+        }
+
+        .sentence-eng {
+            font-size: 16px;
+            color: var(--navy-700);
+            font-family: var(--font-display);
+            font-weight: 500;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+
+        .sentence-cn {
+            font-size: 14px;
+            color: var(--ink-500);
+            line-height: 1.6;
+            padding-left: 10px;
+            border-left: 2px solid var(--navy-100);
+        }
+
+        .sentence-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px dashed var(--ink-300);
+        }
+
+        .read-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            border: 1.5px solid var(--navy-600);
+            border-radius: var(--radius-md);
+            background: transparent;
+            color: var(--navy-700);
+            font-size: 13px;
+            font-family: var(--font-sans);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s var(--ease);
+            flex: 1;
+            justify-content: center;
+        }
+
+        .read-btn:hover {
+            background: var(--navy-50);
+        }
+
+        .read-btn.playing {
+            background: var(--navy-700);
+            color: var(--white);
+            border-color: var(--navy-700);
+        }
+
+        .read-btn .icon-play {
+            width: 0;
+            height: 0;
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+            border-left: 7px solid currentColor;
+            margin-left: 2px;
+        }
+
+        .read-btn.playing .icon-play {
+            border: none;
+            width: 10px;
+            height: 10px;
+            background: currentColor;
+            border-radius: 1px;
+        }
+
+        .speed-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 12px;
+            border: 1.5px solid var(--ink-300);
+            border-radius: var(--radius-md);
+            background: transparent;
+            color: var(--ink-500);
+            font-size: 12px;
+            font-family: var(--font-display);
+            cursor: pointer;
+            transition: all 0.2s var(--ease);
+        }
+
+        .speed-btn:hover {
+            border-color: var(--navy-600);
+            color: var(--navy-700);
+        }
+
+        /* ========== Culture Section ========== */
+        .culture-box {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .culture-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 18px 18px 14px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--ink-300);
+            transition: all 0.3s var(--ease);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .culture-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--navy-700), var(--gold-500));
+        }
+
+        .culture-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateX(2px);
+        }
+
+        .culture-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-md);
+            background: var(--gold-50);
+            color: var(--gold-500);
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .culture-card h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--navy-900);
+            margin-bottom: 8px;
+            font-family: var(--font-serif);
+        }
+
+        .culture-card p {
+            font-size: 14px;
+            color: var(--ink-700);
+            line-height: 1.75;
+        }
+
+        .culture-card .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed var(--ink-300);
+        }
+
+        .culture-tag {
+            padding: 3px 10px;
+            background: var(--navy-50);
+            color: var(--navy-600);
+            border-radius: 100px;
+            font-size: 11px;
+            font-family: var(--font-display);
+        }
+
+        /* ========== Footer ========== */
+        .footer {
+            text-align: center;
+            padding: 24px 20px 32px;
+            color: var(--ink-500);
+            font-size: 12px;
+            border-top: 1px solid var(--ink-300);
+            margin-top: 20px;
+        }
+
+        .footer-en {
+            font-family: var(--font-display);
+            letter-spacing: 2px;
+            color: var(--ink-300);
+            margin-top: 4px;
+        }
+
+        /* ========== Toast ========== */
+        .toast {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: var(--navy-900);
+            color: var(--white);
+            padding: 10px 20px;
+            border-radius: var(--radius-md);
+            font-size: 13px;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s var(--ease);
+            z-index: 1000;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--gold-500);
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ========== Desktop Responsive ========== */
+        @media (min-width: 768px) {
+            .header {
+                padding: 40px 20px 48px;
+            }
+
+            .header-title {
+                font-size: 32px;
+            }
+
+            .header-subtitle {
+                font-size: 16px;
+            }
+
+            .tab-content {
+                padding: 32px 24px 60px;
+            }
+
+            .chat-bubble {
+                padding: 14px 18px;
+                font-size: 15px;
+            }
+
+            .chat-avatar {
+                width: 42px;
+                height: 42px;
+                font-size: 16px;
+            }
+
+            .chat-bubble-wrap {
+                max-width: calc(100% - 64px);
+            }
+
+            .word-question {
+                font-size: 24px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .tab-nav {
+                padding: 0 calc((100% - 800px) / 2 + 8px);
+            }
         }
     </style>
 </head>
 <body>
-    <div class="header">APEC培训 - 酒店入住 (Hotel Checkin)</div>
-    <!-- 顶部标签栏 -->
-    <div class="tab-nav">
-        <button class="active" onclick="switchTab('dialog')">样例对话</button>
-        <button onclick="switchTab('wordGame')">高频词游戏</button>
-        <button onclick="switchTab('sentence')">核心句型跟读</button>
-        <button onclick="switchTab('culture')">文化背景知识</button>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-badge">APEC 2026 · Shenzhen</div>
+        <div class="header-title">酒店入住培训</div>
+        <div class="header-subtitle">Hotel Check-in Training</div>
+        <div class="header-divider"></div>
     </div>
 
-    <!-- 样例对话模块【B站视频从头播放，修复播放失败问题】 -->
+    <!-- Tab Navigation -->
+    <div class="tab-nav">
+        <button class="active" onclick="switchTab('dialog', this)">
+            样例对话
+            <span class="tab-en">Sample Dialog</span>
+        </button>
+        <button onclick="switchTab('wordGame', this)">
+            高频词游戏
+            <span class="tab-en">Vocabulary Game</span>
+        </button>
+        <button onclick="switchTab('sentence', this)">
+            核心句型
+            <span class="tab-en">Key Sentences</span>
+        </button>
+        <button onclick="switchTab('culture', this)">
+            文化背景
+            <span class="tab-en">Culture Insight</span>
+        </button>
+    </div>
+
+    <!-- ========== 样例对话 Tab ========== -->
     <div class="tab-content active" id="dialog">
+        <div class="section-title">
+            <h3>对话视频</h3>
+            <span>Scene Video</span>
+        </div>
+
         <div class="video-box">
-            <!-- B站视频嵌入：从头播放、关闭弹幕、高清，适配所有浏览器 -->
-            <iframe 
-                src="https://player.bilibili.com/player.html?bvid=BV1fUPizFEwH&page=1&danmaku=0&high_quality=1&autoplay=0" 
-                width="100%" 
-                height="100%" 
-                frameborder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                allowfullscreen
-                style="border-radius: 8px;"
-            >
-                你的浏览器不支持视频播放，请用Chrome/Edge/微信浏览器打开
+            <iframe
+                src="https://player.bilibili.com/player.html?bvid=BV1fUPizFEwH&page=1&danmaku=0&high_quality=1&autoplay=0"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
             </iframe>
         </div>
+
+        <div class="section-title">
+            <h3>显示模式</h3>
+            <span>Display Mode</span>
+        </div>
+
         <div class="mode-switch">
-            <button class="active" onclick="switchMode('both')">中英文对照</button>
-            <button onclick="switchMode('eng')">仅英文</button>
-            <button onclick="switchMode('cn')">仅中文</button>
+            <button class="active" onclick="switchMode('both', this)">中英文对照</button>
+            <button onclick="switchMode('eng', this)">English only</button>
+            <button onclick="switchMode('cn', this)">仅中文</button>
         </div>
-        <div class="dialog-box" id="dialogContent">
-            <!-- 中英文对照（默认） -->
-            <div class="dialog-item">
-                <span class="s">工作人员：</span>晚上好，欢迎来到万豪酒店。我是2026深圳APEC峰会的政务服务工作人员。能请您出示一下全名和APEC代表证件吗？<br/>
-                <span class="s">S:</span> Good evening, welcome to Marriott Hotel. I’m the government service staff for APEC 2026 Shenzhen. May I have your full name and your APEC delegate certificate, please?
-            </div>
-            <div class="dialog-item">
-                <span class="f">外宾：</span>晚上好。我叫约翰·史密斯，这是我的证件。<br/>
-                <span class="f">F:</span> Good evening. My name is John Smith, and this is my certificate.
-            </div>
-            <div class="dialog-item">
-                <span class="s">工作人员：</span>谢谢您，史密斯先生。根据APEC的安排，我们为您预留了一间城景豪华单人间，配备免费高速网络。您觉得可以吗？<br/>
-                <span class="s">S:</span> Thank you, Mr. Smith. We have reserved a deluxe single room for you according to the APEC arrangement, with a city view and free high-speed internet. Is that okay for you?
-            </div>
-            <div class="dialog-item">
-                <span class="f">外宾：</span>非常好，很满意。<br/>
-                <span class="f">F:</span> Perfect, that’s great.
-            </div>
-            <div class="dialog-item">
-                <span class="s">工作人员：</span>好的。这是您的房卡，房号是28楼的2808室。电梯就在您的右手边，前往高层需要刷房卡。<br/>
-                <span class="s">S:</span> Great. Here is your room card, the room number is 2808 on the 28th floor. The elevator is just on your right, and the access card is needed for the elevator to upper floors.
-            </div>
-            <div class="dialog-item">
-                <span class="f">外宾：</span>知道了。能介绍一下酒店的设施吗？<br/>
-                <span class="f">F:</span> Got it. Could you tell me about the hotel facilities?
-            </div>
-            <div class="dialog-item">
-                <span class="s">工作人员：</span>当然。早餐在3楼供应，时间是早上6:30到9:30，为APEC代表准备了中西式菜系。紧急呼叫号码印在房卡上，是8888，前台提供24小时服务。我们也提供叫醒服务，如果您需要的话。<br/>
-                <span class="s">S:</span> Sure. The breakfast is served on the 3rd floor from 6:30 to 9:30 a.m., with both Western and Chinese cuisines for APEC delegates. The emergency call number is printed on the room card, which is 8888, and the front desk is available 24 hours a day. We also offer wake-up call service, if you need it.
-            </div>
-            <div class="dialog-item">
-                <span class="f">外宾：</span>请帮我设置明天早上7点的叫醒服务。另外，明天的行程是怎样的？<br/>
-                <span class="f">F:</span> I need a wake-up call at 7 a.m. tomorrow, please. And what’s the schedule for tomorrow?
-            </div>
-            <div class="dialog-item">
-                <span class="s">工作人员：</span>没问题。您的叫醒服务已设置为明天早上7点。我们会在早上8点派班车在酒店门口接您，前往APEC峰会会场大约需要30分钟。开幕式将于早上9:30准时开始。<br/>
-                <span class="s">S:</span> No problem. Your wake-up call is set for 7 a.m. tomorrow. We will pick you up at the hotel gate at 8 a.m. by shuttle bus, and it will take about 30 minutes to reach the APEC summit venue. The opening ceremony will start at 9:30 a.m. sharp.
-            </div>
-            <div class="dialog-item">
-                <span class="f">外宾：</span>非常感谢您的详细介绍。<br/>
-                <span class="f">F:</span> Thank you so much for your detailed introduction.
-            </div>
-            <div class="dialog-item">
-                <span class="s">工作人员：</span>不客气，史密斯先生。如果您有其他需求，请随时联系前台或直接找我。祝您入住愉快！<br/>
-                <span class="s">S:</span> You’re welcome, Mr. Smith. If you have any other needs, please feel free to contact the front desk or me directly. Wish you a comfortable stay here!
-            </div>
-            <div class="dialog-item">
-                <span class="f">外宾：</span>非常感谢。<br/>
-                <span class="f">F:</span> Appreciate it.
-            </div>
+
+        <div class="section-title">
+            <h3>完整对话</h3>
+            <span>Full Conversation</span>
+        </div>
+
+        <div class="chat-container mode-both" id="chatContainer">
+            <!-- Chat items will be rendered by JS -->
         </div>
     </div>
 
-    <!-- 高频词互动游戏模块 -->
+    <!-- ========== 高频词游戏 Tab ========== -->
     <div class="tab-content" id="wordGame">
+        <div class="section-title">
+            <h3>高频词挑战</h3>
+            <span>Vocabulary Challenge</span>
+        </div>
+
         <div class="word-game-box">
-            <div class="word-question" id="wordQuestion">豪华单人间 → ?</div>
+            <div class="word-progress">
+                <span>第 <strong id="currentQ">1</strong> / <span id="totalQ">10</span> 题</span>
+                <div class="score">
+                    <span>得分 Score</span>
+                    <strong id="scoreNum">0</strong>
+                </div>
+            </div>
+
+            <div class="word-progress-bar">
+                <div class="word-progress-fill" id="progressFill"></div>
+            </div>
+
+            <div class="word-question" id="wordQuestion">豪华单人间</div>
+            <div class="word-question-hint">请选择对应的英文释义 / Choose the English equivalent</div>
+
             <div class="word-options" id="wordOptions">
-                <button onclick="checkAnswer(this, 'deluxe single room')">deluxe single room</button>
-                <button onclick="checkAnswer(this, 'deluxe double room')">deluxe double room</button>
-                <button onclick="checkAnswer(this, 'twin room')">twin room</button>
-                <button onclick="checkAnswer(this, 'suite')">suite</button>
+                <!-- Options will be rendered by JS -->
             </div>
+
             <div class="game-result" id="gameResult"></div>
-            <button class="restart-btn" onclick="restartGame()">重新开始游戏</button>
+
+            <button class="next-btn" id="nextBtn" onclick="nextQuestion()">下一题 / Next →</button>
+            <button class="restart-btn" id="restartBtn" onclick="restartGame()">重新开始 / Restart</button>
         </div>
     </div>
 
-    <!-- 核心句型跟读模块 -->
+    <!-- ========== 核心句型 Tab ========== -->
     <div class="tab-content" id="sentence">
-        <div class="sentence-box">
-            <div class="sentence-item">
-                <div class="sentence-eng">May I have your full name and your APEC delegate certificate, please?</div>
-                <div class="sentence-cn">能请您出示一下全名和APEC代表证件吗？</div>
-                <button class="read-btn" onclick="readSentence(this)">点击跟读</button>
+        <div class="section-title">
+            <h3>核心句型跟读</h3>
+            <span>Key Sentences · Shadowing</span>
+        </div>
+
+        <div class="sentence-box" id="sentenceBox">
+            <!-- Sentence cards rendered by JS -->
+        </div>
+    </div>
+
+    <!-- ========== 文化背景 Tab ========== -->
+    <div class="tab-content" id="culture">
+        <div class="section-title">
+            <h3>文化背景与禁忌</h3>
+            <span>Culture & Etiquette</span>
+        </div>
+
+        <div class="culture-box">
+            <div class="culture-card">
+                <div class="culture-icon">🌎</div>
+                <h4>欧美经济体 · Western Economies</h4>
+                <p>注重个人隐私和服务效率，介绍设施无需过度寒暄，信息准确简洁即可；对数字"13""666"有特殊解读，介绍房号无需刻意提及禁忌数字；避免询问私人住宿偏好。</p>
+                <div class="tags">
+                    <span class="culture-tag">Privacy First</span>
+                    <span class="culture-tag">Efficiency</span>
+                    <span class="culture-tag">Number 13</span>
+                </div>
             </div>
-            <div class="sentence-item">
-                <div class="sentence-eng">We have reserved a [room type] for you according to the APEC arrangement, with a [city view/sea view] and free high-speed internet.</div>
-                <div class="sentence-cn">根据APEC的安排，我们为您预留了一间[房型]，配备[城景/海景]和免费高速网络。</div>
-                <button class="read-btn" onclick="readSentence(this)">点击跟读</button>
+
+            <div class="culture-card">
+                <div class="culture-icon">🌴</div>
+                <h4>东南亚经济体 · Southeast Asia</h4>
+                <p>偏好温和、亲切的表达，可适当增加礼貌性问候；马来西亚等伊斯兰国家外宾忌猪肉、酒类相关服务，优先安排无烟房，避免提及相关禁忌物品。</p>
+                <div class="tags">
+                    <span class="culture-tag">Warm Greeting</span>
+                    <span class="culture-tag">Halal Aware</span>
+                    <span class="culture-tag">Non-smoking</span>
+                </div>
             </div>
-            <div class="sentence-item">
-                <div class="sentence-eng">The [服务/设施] is available on the [数字] floor from [时间] to [时间].</div>
-                <div class="sentence-cn">【服务/设施】在[数字]楼供应/开放，时间是[时间]到[时间]。</div>
-                <button class="read-btn" onclick="readSentence(this)">点击跟读</button>
+
+            <div class="culture-card">
+                <div class="culture-icon">🌸</div>
+                <h4>日韩经济体 · Japan & Korea</h4>
+                <p>注重礼仪细节，沟通时语气谦和；日本外宾忌荷花图案、梳子类物品，韩国外宾忌剪刀/刀具，介绍酒店用品时需规避；房号避免奇数（除3、5外）偏好。</p>
+                <div class="tags">
+                    <span class="culture-tag">Etiquette</span>
+                    <span class="culture-tag">Taboo Items</span>
+                    <span class="culture-tag">Even Numbers</span>
+                </div>
             </div>
-            <div class="sentence-item">
-                <div class="sentence-eng">We will pick you up at [地点] at [时间], and it will take about [时长] to reach the venue.</div>
-                <div class="sentence-cn">我们会在[时间]在[地点]接您，前往会场大约需要[时长]。</div>
-                <button class="read-btn" onclick="readSentence(this)">点击跟读</button>
+
+            <div class="culture-card">
+                <div class="culture-icon">🕌</div>
+                <h4>中东经济体 · Middle East</h4>
+                <p>注重社交距离，避免肢体接触；忌猪肉、酒类、女性形象相关服务，酒店设施介绍需规避；左手视为不洁，递送房卡等物品需用右手；数字偏好双数，房号优先选择双数。</p>
+                <div class="tags">
+                    <span class="culture-tag">Right Hand Only</span>
+                    <span class="culture-tag">Personal Space</span>
+                    <span class="culture-tag">No Alcohol</span>
+                </div>
             </div>
-            <div class="sentence-item">
-                <div class="sentence-eng">If you have any other needs, please feel free to contact us. Wish you a comfortable stay here!</div>
-                <div class="sentence-cn">如果您有其他需求，请随时联系我们。祝您入住愉快！</div>
-                <button class="read-btn" onclick="readSentence(this)">点击跟读</button>
+
+            <div class="culture-card">
+                <div class="culture-icon">📋</div>
+                <h4>通用住宿服务规范 · General Standards</h4>
+                <p>所有外宾房型以豪华单/双人间为主，重要代表安排套房，优先预留无烟房；紧急电话清晰告知并标注在房卡，明确前台24小时服务；房型更换需求需告知"协调会务组处理"，避免直接拒绝。</p>
+                <div class="tags">
+                    <span class="culture-tag">24/7 Front Desk</span>
+                    <span class="culture-tag">Emergency 8888</span>
+                    <span class="culture-tag">Conference Desk</span>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- 文化背景知识模块 -->
-    <div class="tab-content" id="culture">
-        <div class="culture-box">
-            <div class="culture-title">APEC参与国文化与住宿禁忌</div>
-            <div class="culture-item">
-                <h4>欧美经济体（美国、加拿大、欧盟等）</h4>
-                <p>注重个人隐私和服务效率，介绍设施无需过度寒暄，信息准确简洁即可；对数字“13”“666”有特殊解读，介绍房号无需刻意提及禁忌数字；避免询问私人住宿偏好。</p>
-            </div>
-            <div class="culture-item">
-                <h4>东南亚经济体（马来西亚、新加坡、泰国等）</h4>
-                <p>偏好温和、亲切的表达，可适当增加礼貌性问候；马来西亚等伊斯兰国家外宾忌猪肉、酒类相关服务，优先安排无烟房，避免提及相关禁忌物品。</p>
-            </div>
-            <div class="culture-item">
-                <h4>日韩经济体（日本、韩国）</h4>
-                <p>注重礼仪细节，沟通时语气谦和；日本外宾忌荷花图案、梳子类物品，韩国外宾忌剪刀/刀具，介绍酒店用品时需规避；房号避免奇数（除3、5外）偏好。</p>
-            </div>
-            <div class="culture-item">
-                <h4>中东经济体（沙特、阿联酋、卡塔尔等）</h4>
-                <p>注重社交距离，避免肢体接触；忌猪肉、酒类、女性形象相关服务，酒店设施介绍需规避；左手视为不洁，递送房卡等物品需用右手；数字偏好双数，房号优先选择双数。</p>
-            </div>
-            <div class="culture-item">
-                <h4>通用住宿服务规范</h4>
-                <p>所有外宾房型以豪华单/双人间为主，重要代表安排套房，优先预留无烟房；紧急电话清晰告知并标注在房卡，明确前台24小时服务；房型更换需求需告知“协调会务组处理”，避免直接拒绝。</p>
-            </div>
-        </div>
+    <!-- Footer -->
+    <div class="footer">
+        <div>APEC 2026 深圳 · 政务服务英语培训</div>
+        <div class="footer-en">Shenzhen · Government Service English Program</div>
     </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
 
     <script>
-        // 标签切换
-        function switchTab(tabId) {
+        // ========== Data ==========
+        const dialogData = [
+            {
+                role: "staff",
+                name: "工作人员 / Staff",
+                avatar: "S",
+                cn: "晚上好，欢迎来到万豪酒店。我是 2026 深圳 APEC 峰会的政务服务工作人员。能请您出示一下全名和 APEC 代表证件吗？",
+                eng: "Good evening, welcome to Marriott Hotel. I'm the government service staff for APEC 2026 Shenzhen. May I have your full name and your APEC delegate certificate, please?"
+            },
+            {
+                role: "guest",
+                name: "外宾 / Guest",
+                avatar: "G",
+                cn: "晚上好。我叫约翰·史密斯，这是我的证件。",
+                eng: "Good evening. My name is John Smith, and this is my certificate."
+            },
+            {
+                role: "staff",
+                name: "工作人员 / Staff",
+                avatar: "S",
+                cn: "谢谢您，史密斯先生。根据 APEC 的安排，我们为您预留了一间城景豪华单人间，配备免费高速网络。您觉得可以吗？",
+                eng: "Thank you, Mr. Smith. We have reserved a deluxe single room for you according to the APEC arrangement, with a city view and free high-speed internet. Is that okay for you?"
+            },
+            {
+                role: "guest",
+                name: "外宾 / Guest",
+                avatar: "G",
+                cn: "非常好，很满意。",
+                eng: "Perfect, that sounds great."
+            },
+            {
+                role: "staff",
+                name: "工作人员 / Staff",
+                avatar: "S",
+                cn: "好的。这是您的房卡，房号是 28 楼的 2808 室。电梯就在您的右手边，前往高层需要刷房卡。",
+                eng: "Great. Here is your room card — room 2808 on the 28th floor. The elevator is on your right, and the access card is needed for upper floors."
+            },
+            {
+                role: "guest",
+                name: "外宾 / Guest",
+                avatar: "G",
+                cn: "知道了。能介绍一下酒店的设施吗？",
+                eng: "Got it. Could you tell me about the hotel facilities?"
+            },
+            {
+                role: "staff",
+                name: "工作人员 / Staff",
+                avatar: "S",
+                cn: "当然。早餐在 3 楼供应，时间是早上 6:30 到 9:30，为 APEC 代表准备了中西式菜系。紧急呼叫号码印在房卡上，是 8888，前台提供 24 小时服务。我们也提供叫醒服务，如果您需要的话。",
+                eng: "Certainly. Breakfast is served on the 3rd floor from 6:30 to 9:30 a.m., with both Western and Chinese cuisines for APEC delegates. The emergency number is 8888, printed on your room card. The front desk is available 24 hours. We also offer wake-up call service if you need it."
+            },
+            {
+                role: "guest",
+                name: "外宾 / Guest",
+                avatar: "G",
+                cn: "请帮我设置明天早上 7 点的叫醒服务。另外，明天的行程是怎样的？",
+                eng: "I'd like a wake-up call at 7 a.m. tomorrow, please. And what's the schedule for tomorrow?"
+            },
+            {
+                role: "staff",
+                name: "工作人员 / Staff",
+                avatar: "S",
+                cn: "没问题。您的叫醒服务已设置为明天早上 7 点。我们会在早上 8 点派班车在酒店门口接您，前往 APEC 峰会会场大约需要 30 分钟。开幕式将于早上 9:30 准时开始。",
+                eng: "No problem. Your wake-up call is set for 7 a.m. We'll pick you up at the hotel gate at 8 a.m. by shuttle bus, and it takes about 30 minutes to reach the APEC summit venue. The opening ceremony starts at 9:30 a.m. sharp."
+            },
+            {
+                role: "guest",
+                name: "外宾 / Guest",
+                avatar: "G",
+                cn: "非常感谢您的详细介绍。",
+                eng: "Thank you so much for the detailed introduction."
+            },
+            {
+                role: "staff",
+                name: "工作人员 / Staff",
+                avatar: "S",
+                cn: "不客气，史密斯先生。如果您有其他需求，请随时联系前台或直接找我。祝您入住愉快！",
+                eng: "You're welcome, Mr. Smith. If you have any other needs, please feel free to contact the front desk or me directly. Wish you a comfortable stay!"
+            },
+            {
+                role: "guest",
+                name: "外宾 / Guest",
+                avatar: "G",
+                cn: "非常感谢。",
+                eng: "Appreciate it."
+            }
+        ];
+
+        const wordBank = [
+            { cn: "豪华单人间", eng: "deluxe single room" },
+            { cn: "豪华双人间", eng: "deluxe double room" },
+            { cn: "双床房", eng: "twin room" },
+            { cn: "套房", eng: "suite" },
+            { cn: "城景房", eng: "city view room" },
+            { cn: "无烟房", eng: "smoke-free room" },
+            { cn: "代表证件", eng: "delegate certificate" },
+            { cn: "房卡", eng: "room card / key card" },
+            { cn: "叫醒服务", eng: "wake-up call" },
+            { cn: "班车", eng: "shuttle bus" }
+        ];
+
+        const sentenceData = [
+            {
+                eng: "May I have your full name and your APEC delegate certificate, please?",
+                cn: "能请您出示一下全名和 APEC 代表证件吗？"
+            },
+            {
+                eng: "We have reserved a [room type] for you according to the APEC arrangement, with a [city view / sea view] and free high-speed internet.",
+                cn: "根据 APEC 的安排，我们为您预留了一间 [房型]，配备 [城景/海景] 和免费高速网络。"
+            },
+            {
+                eng: "The [facility] is available on the [X] floor from [time] to [time].",
+                cn: "【设施】在 [X] 楼开放，时间是 [时间] 到 [时间]。"
+            },
+            {
+                eng: "We will pick you up at [location] at [time], and it will take about [duration] to reach the venue.",
+                cn: "我们会在 [时间] 在 [地点] 接您，前往会场大约需要 [时长]。"
+            },
+            {
+                eng: "If you have any other needs, please feel free to contact us. Wish you a comfortable stay!",
+                cn: "如果您有其他需求，请随时联系我们。祝您入住愉快！"
+            }
+        ];
+
+        // ========== Tab Switching ==========
+        function switchTab(tabId, btn) {
             const tabs = document.querySelectorAll('.tab-content');
             const btns = document.querySelectorAll('.tab-nav button');
             tabs.forEach(tab => tab.classList.remove('active'));
-            btns.forEach(btn => btn.classList.remove('active'));
+            btns.forEach(b => b.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
-            event.target.classList.add('active');
+            btn.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // 对话模式切换
-        let dialogOrigin = document.getElementById('dialogContent').innerHTML;
-        function switchMode(mode) {
+        // ========== Chat Rendering ==========
+        function renderChat() {
+            const container = document.getElementById('chatContainer');
+            container.innerHTML = dialogData.map((item, index) => `
+                <div class="chat-row ${item.role}" style="animation-delay: ${index * 0.05}s">
+                    <div class="chat-avatar">${item.avatar}</div>
+                    <div class="chat-bubble-wrap">
+                        <div class="chat-name">${item.name}</div>
+                        <div class="chat-bubble">
+                            <div class="text-cn">${item.cn}</div>
+                            <div class="text-eng">${item.eng}</div>
+                            <button class="speak-btn" onclick="speakText('${item.eng.replace(/'/g, "\\'")}', this)">
+                                <span class="speak-icon"></span>
+                                播放朗读
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ========== Mode Switching ==========
+        function switchMode(mode, btn) {
+            const container = document.getElementById('chatContainer');
             const btns = document.querySelectorAll('.mode-switch button');
-            btns.forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            const dialog = document.getElementById('dialogContent');
-            if (mode === 'both') {
-                dialog.innerHTML = dialogOrigin;
-            } else if (mode === 'eng') {
-                let html = dialogOrigin.replace(/<br\/>.*?：.*?<br\/>/g, '<br/>').replace(/<span class="s">工作人员：<\/span>.*?<br\/>/g, '').replace(/<span class="f">外宾：<\/span>.*?<br\/>/g, '');
-                dialog.innerHTML = html;
-            } else if (mode === 'cn') {
-                let html = dialogOrigin.replace(/<span class="s">S:<\/span>.*?<br\/>/g, '').replace(/<span class="f">F:<\/span>.*?<br\/>/g, '');
-                dialog.innerHTML = html;
-            }
+
+            btns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            container.classList.remove('mode-both', 'mode-eng', 'mode-cn');
+            container.classList.add('mode-' + mode);
         }
 
-        // 高频词游戏
-        const wordBank = [
-            {cn: "豪华单人间", eng: "deluxe single room"},
-            {cn: "豪华双人间", eng: "deluxe double room"},
-            {cn: "双床房", eng: "twin room"},
-            {cn: "套房", eng: "suite"},
-            {cn: "城景房", eng: "city view room"},
-            {cn: "无烟房", eng: "smoke-free room"},
-            {cn: "代表证件", eng: "delegate certificate"},
-            {cn: "房卡", eng: "room card"},
-            {cn: "叫醒服务", eng: "wake-up call"},
-            {cn: "班车", eng: "shuttle bus"}
-        ];
-        let currentWord = {};
+        // ========== Speech Synthesis ==========
+        let currentUtterance = null;
+        let currentPlayingBtn = null;
+
+        function speakText(text, btn) {
+            if (!('speechSynthesis' in window)) {
+                showToast('您的浏览器不支持语音合成，请更换浏览器');
+                return;
+            }
+
+            // 如果点击的是正在播放的按钮，停止播放
+            if (currentPlayingBtn === btn && speechSynthesis.speaking) {
+                speechSynthesis.cancel();
+                resetPlayingBtn();
+                return;
+            }
+
+            // 停止之前的播放
+            speechSynthesis.cancel();
+            resetPlayingBtn();
+
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-US';
+            utterance.rate = 0.9;
+            utterance.pitch = 1;
+
+            // 尝试选择一个英文语音
+            const voices = speechSynthesis.getVoices();
+            const englishVoice = voices.find(v => v.lang.startsWith('en') && v.name.includes('Female'))
+                || voices.find(v => v.lang.startsWith('en-US'))
+                || voices.find(v => v.lang.startsWith('en'));
+            if (englishVoice) {
+                utterance.voice = englishVoice;
+            }
+
+            utterance.onstart = () => {
+                btn.classList.add('playing');
+                currentPlayingBtn = btn;
+                // 改变按钮文字
+                const originalText = btn.innerHTML;
+                btn.dataset.originalText = originalText;
+                btn.innerHTML = '<span class="speak-icon"></span>播放中...';
+            };
+
+            utterance.onend = () => {
+                resetPlayingBtn();
+            };
+
+            utterance.onerror = () => {
+                resetPlayingBtn();
+            };
+
+            currentUtterance = utterance;
+            speechSynthesis.speak(utterance);
+        }
+
+        function resetPlayingBtn() {
+            if (currentPlayingBtn && currentPlayingBtn.dataset.originalText) {
+                currentPlayingBtn.innerHTML = currentPlayingBtn.dataset.originalText;
+            }
+            if (currentPlayingBtn) {
+                currentPlayingBtn.classList.remove('playing');
+            }
+            currentPlayingBtn = null;
+        }
+
+        // 预加载语音
+        if ('speechSynthesis' in window) {
+            speechSynthesis.onvoiceschanged = () => {
+                // 触发一次以加载语音列表
+                speechSynthesis.getVoices();
+            };
+        }
+
+        // ========== Word Game ==========
+        let shuffledWords = [];
+        let currentQIndex = 0;
+        let score = 0;
+        let answered = false;
+
         function initGame() {
-            // 随机选一个单词
-            currentWord = wordBank[Math.floor(Math.random() * wordBank.length)];
-            document.getElementById('wordQuestion').innerHTML = currentWord.cn + ' → ?';
+            // 打乱单词顺序
+            shuffledWords = [...wordBank].sort(() => Math.random() - 0.5);
+            currentQIndex = 0;
+            score = 0;
+            answered = false;
+
+            document.getElementById('totalQ').textContent = shuffledWords.length;
+            document.getElementById('scoreNum').textContent = '0';
+            document.getElementById('restartBtn').textContent = '重新开始 / Restart';
+
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            answered = false;
+            const word = shuffledWords[currentQIndex];
+            document.getElementById('wordQuestion').textContent = word.cn;
+            document.getElementById('currentQ').textContent = currentQIndex + 1;
+            document.getElementById('gameResult').textContent = '';
+
+            // 更新进度条
+            const progress = (currentQIndex / shuffledWords.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+
             // 生成选项
-            const options = [currentWord.eng];
-            // 随机加3个干扰项
+            const options = [word.eng];
             while (options.length < 4) {
                 const randomWord = wordBank[Math.floor(Math.random() * wordBank.length)];
-                if (!options.includes(randomWord.eng)) options.push(randomWord.eng);
+                if (!options.includes(randomWord.eng)) {
+                    options.push(randomWord.eng);
+                }
             }
-            // 打乱选项
             options.sort(() => Math.random() - 0.5);
+
             const optionBox = document.getElementById('wordOptions');
-            optionBox.innerHTML = '';
-            options.forEach(opt => {
-                optionBox.innerHTML += `<button onclick="checkAnswer(this, '${opt}')">${opt}</button>`;
-            });
-            document.getElementById('gameResult').innerHTML = '';
+            optionBox.innerHTML = options.map(opt =>
+                `<button onclick="checkAnswer(this, '${opt.replace(/'/g, "\\'")}')">${opt}</button>`
+            ).join('');
+
+            document.getElementById('nextBtn').classList.remove('show');
         }
-        // 检查答案
+
         function checkAnswer(btn, answer) {
+            if (answered) return;
+            answered = true;
+
+            const correct = shuffledWords[currentQIndex].eng;
             const result = document.getElementById('gameResult');
-            if (answer === currentWord.eng) {
+            const allBtns = document.querySelectorAll('.word-options button');
+
+            allBtns.forEach(b => {
+                b.disabled = true;
+                if (b.textContent.trim() === correct) {
+                    b.classList.add('correct');
+                }
+            });
+
+            if (answer === correct) {
                 btn.classList.add('correct');
-                result.innerHTML = '✅ 回答正确！';
-                result.style.color = '#28a745';
+                score++;
+                document.getElementById('scoreNum').textContent = score;
+                result.innerHTML = '<span style="color: var(--success)">✓ 回答正确！ / Correct!</span>';
             } else {
                 btn.classList.add('wrong');
-                result.innerHTML = `❌ 回答错误，正确答案：${currentWord.eng}`;
-                result.style.color = '#dc3545';
+                result.innerHTML = `<span style="color: var(--error)">✗ 回答错误 / Incorrect · 正确答案：${correct}</span>`;
             }
-            // 禁用所有按钮
-            const allBtns = document.querySelectorAll('.word-options button');
-            allBtns.forEach(b => b.onclick = null);
+
+            // 显示下一题按钮
+            const nextBtn = document.getElementById('nextBtn');
+            if (currentQIndex < shuffledWords.length - 1) {
+                nextBtn.textContent = '下一题 / Next →';
+                nextBtn.classList.add('show');
+            } else {
+                nextBtn.classList.remove('show');
+                // 游戏结束
+                setTimeout(() => {
+                    const pct = Math.round((score / shuffledWords.length) * 100);
+                    let msg = '';
+                    if (pct === 100) msg = '🏆 满分！太棒了！ / Perfect!';
+                    else if (pct >= 80) msg = '🌟 优秀！继续保持 / Excellent work!';
+                    else if (pct >= 60) msg = '👍 不错，还可以更好 / Good effort!';
+                    else msg = '💪 继续加油！多练几遍 / Keep practicing!';
+
+                    document.getElementById('gameResult').innerHTML =
+                        `<strong style="color: var(--navy-700); font-size: 16px;">最终得分 / Final Score: ${score}/${shuffledWords.length}</strong><br><span style="color: var(--gold-500);">${msg}</span>`;
+                    document.getElementById('progressFill').style.width = '100%';
+                }, 300);
+            }
         }
-        // 重新开始游戏
+
+        function nextQuestion() {
+            currentQIndex++;
+            renderQuestion();
+        }
+
         function restartGame() {
             initGame();
         }
-        // 初始化游戏
-        window.onload = initGame();
 
-        // 句型跟读（模拟，可对接语音接口）
-        function readSentence(btn) {
-            const sentence = btn.previousElementSibling.previousElementSibling.innerHTML;
-            // 此处可嵌入语音合成API，播放英文句子
-            alert(`正在播放跟读：\n${sentence}`);
-            // 实际开发可替换为：new SpeechSynthesisUtterance(sentence); speechSynthesis.speak(utterance);
+        // ========== Sentence Practice ==========
+        function renderSentences() {
+            const box = document.getElementById('sentenceBox');
+            box.innerHTML = sentenceData.map((s, i) => `
+                <div class="sentence-card">
+                    <div class="sentence-card-num">${i + 1}</div>
+                    <div class="sentence-eng">${s.eng}</div>
+                    <div class="sentence-cn">${s.cn}</div>
+                    <div class="sentence-actions">
+                        <button class="read-btn" onclick="speakSentence('${s.eng.replace(/'/g, "\\'")}', this)">
+                            <span class="icon-play"></span>
+                            播放朗读 / Play
+                        </button>
+                        <button class="speed-btn" onclick="changeSpeed(this)" title="语速">0.9×</button>
+                    </div>
+                </div>
+            `).join('');
         }
+
+        function speakSentence(text, btn) {
+            if (!('speechSynthesis' in window)) {
+                showToast('您的浏览器不支持语音合成');
+                return;
+            }
+
+            if (currentPlayingBtn === btn && speechSynthesis.speaking) {
+                speechSynthesis.cancel();
+                resetSentenceBtn();
+                return;
+            }
+
+            speechSynthesis.cancel();
+            resetSentenceBtn();
+
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-US';
+            utterance.rate = parseFloat(btn.parentElement.querySelector('.speed-btn').textContent) || 0.9;
+            utterance.pitch = 1;
+
+            const voices = speechSynthesis.getVoices();
+            const englishVoice = voices.find(v => v.lang.startsWith('en') && v.name.includes('Female'))
+                || voices.find(v => v.lang.startsWith('en-US'))
+                || voices.find(v => v.lang.startsWith('en'));
+            if (englishVoice) {
+                utterance.voice = englishVoice;
+            }
+
+            utterance.onstart = () => {
+                btn.classList.add('playing');
+                currentPlayingBtn = btn;
+                btn.dataset.originalHTML = btn.innerHTML;
+                btn.innerHTML = '<span class="icon-play"></span>播放中 / Playing...';
+            };
+
+            utterance.onend = () => {
+                resetSentenceBtn();
+            };
+
+            utterance.onerror = () => {
+                resetSentenceBtn();
+            };
+
+            speechSynthesis.speak(utterance);
+        }
+
+        function resetSentenceBtn() {
+            if (currentPlayingBtn && currentPlayingBtn.dataset.originalHTML) {
+                currentPlayingBtn.innerHTML = currentPlayingBtn.dataset.originalHTML;
+            }
+            if (currentPlayingBtn) {
+                currentPlayingBtn.classList.remove('playing');
+            }
+            currentPlayingBtn = null;
+        }
+
+        function changeSpeed(btn) {
+            const speeds = [0.6, 0.75, 0.9, 1.0, 1.2];
+            const current = parseFloat(btn.textContent);
+            const idx = speeds.indexOf(current);
+            const nextIdx = (idx + 1) % speeds.length;
+            btn.textContent = speeds[nextIdx].toFixed(speeds[nextIdx] % 1 === 0 ? 1 : 2) + '×';
+        }
+
+        // ========== Toast ==========
+        let toastTimer = null;
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
+        }
+
+        // ========== Init ==========
+        window.addEventListener('DOMContentLoaded', () => {
+            renderChat();
+            renderSentences();
+            initGame();
+        });
+
+        // 页面离开时停止语音
+        window.addEventListener('beforeunload', () => {
+            if (speechSynthesis) speechSynthesis.cancel();
+        });
     </script>
 </body>
 </html>
