@@ -39,5 +39,6 @@ jobs:
           aliyun ossutil cp index.html \
             oss://${{ secrets.ALIYUN_OSS_BUCKET }}/index.html \
             -e oss-cn-hangzhou.aliyuncs.com \
-            --force
+            --force \
+            --content-type "text/html; charset=utf-8"
           echo "=== Done ==="
