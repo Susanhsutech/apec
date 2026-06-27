@@ -32,11 +32,3 @@ jobs:
           aliyun ossutil cp index.html oss://${{ secrets.ALIYUN_OSS_BUCKET }}/index.html \
             --region ${{ secrets.ALIYUN_OSS_REGION }} \
             -f
-
-      - name: Refresh CDN (optional)
-        if: ${{ secrets.ALIYUN_CDN_DOMAIN != '' }}
-        run: |
-          aliyun cdn RefreshObjectCaches \
-            --ObjectPath "https://${{ secrets.ALIYUN_CDN_DOMAIN }}/index.html" \
-            --ObjectType File
-        continue-on-error: true
