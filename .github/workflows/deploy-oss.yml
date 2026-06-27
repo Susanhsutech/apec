@@ -29,6 +29,16 @@ jobs:
 
       - name: Upload to OSS
         run: |
-          aliyun ossutil cp index.html oss://${{ secrets.ALIYUN_OSS_BUCKET }}/index.html \
-            --region ${{ secrets.ALIYUN_OSS_REGION }} \
-            -f
+          echo "=== Bucket info ==="
+          echo "Bucket: ${{ secrets.ALIYUN_OSS_BUCKET }}"
+          echo "Region: ${{ secrets.ALIYUN_OSS_REGION }}"
+          echo ""
+          echo "=== File check ==="
+          ls -la index.html
+          echo ""
+          echo "=== Uploading... ==="
+          aliyun ossutil cp index.html \
+            oss://${{ secrets.ALIYUN_OSS_BUCKET }}/index.html \
+            -e ${{ secrets.ALIYUN_OSS_REGION }}.aliyuncs.com \
+            --force
+          echo "=== Done ==="
