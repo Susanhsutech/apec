@@ -23,7 +23,7 @@ jobs:
           aliyun configure set \
             --profile default \
             --mode AK \
-            --region ${{ secrets.ALIYUN_OSS_REGION }} \
+            --region cn-hangzhou \
             --access-key-id ${{ secrets.ALIYUN_ACCESS_KEY_ID }} \
             --access-key-secret ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
 
@@ -31,7 +31,6 @@ jobs:
         run: |
           echo "=== Bucket info ==="
           echo "Bucket: ${{ secrets.ALIYUN_OSS_BUCKET }}"
-          echo "Region: ${{ secrets.ALIYUN_OSS_REGION }}"
           echo ""
           echo "=== File check ==="
           ls -la index.html
@@ -39,6 +38,6 @@ jobs:
           echo "=== Uploading... ==="
           aliyun ossutil cp index.html \
             oss://${{ secrets.ALIYUN_OSS_BUCKET }}/index.html \
-            -e ${{ secrets.ALIYUN_OSS_REGION }}.aliyuncs.com \
+            -e oss-cn-hangzhou.aliyuncs.com \
             --force
           echo "=== Done ==="
